@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineHub • Movies</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto',sans-serif;background:#0d0d0d;color:#fff;overflow-x:hidden}
+a,button,.movie-card,.nav-btn,.play-btn,.close,input{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:rgba(0,0,0,.85);position:sticky;top:0;z-index:1000;gap:20px}
+.logo{font-family:'Oswald',sans-serif;font-size:28px;color:#ff4c4c}
+nav ul{list-style:none;display:flex;gap:25px}
+nav li:hover{color:#ff4c4c}
+nav .active{color:#ff4c4c}
+
+/* SEARCH */
+.search-wrap input{
+  padding:6px 10px;
+  border-radius:6px;
+  border:none;
+  background:#1a1a1a;
+  color:#fff;
+  outline:none;
+  width:220px;
+}
+
+/* HERO */
+.movies-hero{position:relative;height:60vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hero-video{position:absolute;width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.hero-content{position:relative;text-align:center;z-index:2}
+.hero-content h1{font-size:56px;margin-bottom:10px}
+.hero-content p{font-size:20px;margin-bottom:20px}
+.hero-content .btn{padding:12px 25px;margin:0 10px;border:none;border-radius:5px;font-size:16px;font-weight:700;transition:.3s}
+.btn-watch{background:#ff4c4c;color:#fff}
+.btn-download{background:#333;color:#fff}
+.btn-watch:hover{background:#ff1a1a}
+.btn-download:hover{background:#555}
+
+/* FILTERS */
+.filters{display:flex;justify-content:center;gap:12px;padding:25px 0}
+.filter-btn{background:#1a1a1a;border:none;padding:10px 18px;border-radius:20px;color:#fff;transition:.3s}
+.filter-btn.active,.filter-btn:hover{background:#ff4c4c}
+
+/* MOVIE GRID */
+.movies-wrapper{padding:20px 50px 40px}
+.movie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:22px}
+.movie-card{position:relative;cursor:pointer;transition:.35s}
+.movie-card img{width:100%;border-radius:10px}
+.movie-card:hover{transform:scale(1.05)}
+.movie-title{text-align:center;margin-top:8px;font-size:14px}
+
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:12px;padding-bottom:40px;flex-wrap:wrap}
+.pagination button{background:#ff4c4c;border:none;padding:8px 14px;border-radius:6px;color:#fff;font-weight:700;transition:.3s}
+.pagination button:hover{background:#ff1a1a}
+.page-numbers span{margin:0 5px;cursor:pointer}
+.page-numbers .active{color:#ff4c4c;font-weight:700}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:2000}
+.modal-content{width:80%;max-width:900px;background:#111;border-radius:12px;padding:25px;position:relative}
+.modal video{width:100%;border-radius:8px;margin-top:15px}
+.close{position:absolute;top:10px;right:18px;font-size:26px}
+
+/* FOOTER */
+footer{background:#0a0a0a;margin-top:80px;padding:70px 70px 30px}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px}
+.footer-col h4{color:#ff4c4c;margin-bottom:18px;font-family:'Oswald',sans-serif}
+.footer-col a,.footer-col p{color:#aaa;font-size:14px;display:block;margin-bottom:10px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #222;margin-top:50px;padding-top:20px;text-align:center;font-size:13px;color:#777}
+
+@media(max-width:768px){
+  header{flex-direction:column}
+  .search-wrap input{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CineHub</div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li class="active">Movies</li>
+      <li><a href="genres.html">Genres</a></li>
+      <li><a href="trailers.html">Trailers</a></li>
+      <li><a href="coming-soon.html">Coming Soon</a></li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
+
+  <div class="search-wrap">
+    <input id="searchInput" type="text" placeholder="Search movies...">
+  </div>
+</header>
+
+<section class="movies-hero">
+  <video class="hero-video" autoplay muted loop src="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4"></video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>All Movies</h1>
+    <p>Explore every title on CineHub</p>
+  </div>
+</section>
+
+<section class="filters">
+  <button class="filter-btn active" data-genre="all">All</button>
+  <button class="filter-btn" data-genre="action">Action</button>
+  <button class="filter-btn" data-genre="drama">Drama</button>
+  <button class="filter-btn" data-genre="comedy">Comedy</button>
+  <button class="filter-btn" data-genre="horror">Horror</button>
+  <button class="filter-btn" data-genre="sci-fi">Sci-Fi</button>
+</section>
+
+<section class="movies-wrapper">
+  <div id="movieGrid" class="movie-grid"></div>
+</section>
+
+<div class="pagination">
+  <button id="prevBtn">Prev</button>
+  <div id="pageNumbers" class="page-numbers"></div>
+  <button id="nextBtn">Next</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="movieModal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">✕</span>
+    <video id="modalVideo" controls></video>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h4>CineHub</h4><p>Premium cinematic streaming platform.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="genres.html">Genres</a><a href="trailers.html">Trailers</a><a href="coming-soon.html">Coming Soon</a></div>
+    <div class="footer-col"><h4>Support</h4><a>Help Center</a><a>FAQ</a><a>Terms of Service</a><a>Privacy Policy</a></div>
+    <div class="footer-col"><h4>Contact</h4><p>support@cinehub.com</p><p>London, UK</p></div>
+  </div>
+  <div class="footer-bottom">© 2026 CineHub</div>
+</footer>
+
+<script>
+const IMAGE="img/20222406.webp";
+const VIDEO="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4";
+
+const movies=Array.from({length:50}).map((_,i)=>({
+  title:`Movie ${i+1}`,
+  genre:["action","drama","comedy","horror","sci-fi"][i%5],
+  img:IMAGE,
+  video:VIDEO
+}));
+
+const grid=document.getElementById("movieGrid");
+const searchInput=document.getElementById("searchInput");
+const filterBtns=document.querySelectorAll(".filter-btn");
+const pageNumbers=document.getElementById("pageNumbers");
+const prevBtn=document.getElementById("prevBtn");
+const nextBtn=document.getElementById("nextBtn");
+const modal=document.getElementById("movieModal");
+const modalVideo=document.getElementById("modalVideo");
+const closeModalBtn=document.getElementById("closeModal");
+
+let currentPage=1;
+const perPage=12;
+let activeGenre="all";
+
+function filteredMovies(){
+  return movies.filter(m=>
+    (activeGenre==="all"||m.genre===activeGenre) &&
+    m.title.toLowerCase().includes(searchInput.value.toLowerCase())
+  );
+}
+
+function render(){
+  const data=filteredMovies();
+  const start=(currentPage-1)*perPage;
+  const slice=data.slice(start,start+perPage);
+
+  grid.innerHTML="";
+  slice.forEach(m=>{
+    const card=document.createElement("div");
+    card.className="movie-card";
+    card.innerHTML=`<img src="${m.img}"><div class='movie-title'>${m.title}</div>`;
+    card.onclick=()=>openModal(m.video);
+    grid.appendChild(card);
+  });
+
+  renderPagination(data.length);
+}
+
+function renderPagination(total){
+  const pages=Math.ceil(total/perPage);
+  pageNumbers.innerHTML="";
+  for(let i=1;i<=pages;i++){
+    const span=document.createElement("span");
+    span.textContent=i;
+    if(i===currentPage) span.classList.add("active");
+    span.onclick=()=>{currentPage=i;render()};
+    pageNumbers.appendChild(span);
+  }
+}
+
+searchInput.oninput=()=>{currentPage=1;render()};
+
+filterBtns.forEach(btn=>{
+  btn.onclick=()=>{
+    filterBtns.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    activeGenre=btn.dataset.genre;
+    currentPage=1;
+    render();
+  }
+});
+
+prevBtn.onclick=()=>{if(currentPage>1){currentPage--;render()}};
+nextBtn.onclick=()=>{const total=Math.ceil(filteredMovies().length/perPage);if(currentPage<total){currentPage++;render()}};
+
+function openModal(src){
+  modal.style.display="flex";
+  modalVideo.src=src;
+  modalVideo.play();
+}
+
+closeModalBtn.onclick=()=>{modalVideo.pause();modalVideo.currentTime=0;modalVideo.removeAttribute("src");modal.style.display="none"};
+modal.onclick=(e)=>{if(e.target===modal) closeModalBtn.onclick()}
+
+render();
+</script>
+
+<script src=""></script>
+</body>
+</html>

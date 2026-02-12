@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineHub • Genres</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto',sans-serif;background:#0d0d0d;color:#fff;overflow-x:hidden}
+a,button,.movie-card,.nav-btn,.genre-tab,.play-btn,.close,input{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;background:rgba(0,0,0,.85);position:sticky;top:0;z-index:1000;gap:20px}
+.logo{font-family:'Oswald',sans-serif;font-size:28px;color:#ff4c4c}
+nav ul{list-style:none;display:flex;gap:25px}
+nav li:hover{color:#ff4c4c}
+nav .active{color:#ff4c4c}
+
+.search-wrap input{
+  padding:8px 14px;
+  border-radius:6px;
+  border:none;
+  background:#1a1a1a;
+  color:#fff;
+  outline:none;
+  width:220px;
+}
+
+/* HERO */
+.hero{position:relative;height:50vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero video{position:absolute;width:100%;height:100%;object-fit:cover;filter:brightness(.45)}
+.hero h1{position:relative;font-size:50px;font-family:'Oswald',sans-serif}
+
+/* TABS */
+.genre-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;padding:30px}
+
+.genre-tab{
+  padding:10px 18px;
+  border-radius:20px;
+  background:var(--card);
+  color:var(--text);
+  border:1px solid rgba(255,255,255,.06);
+  transition:.3s;
+}
+
+.genre-tab.active,
+.genre-tab:hover{
+  background:var(--accent);
+  color:#fff;
+}
+
+/* SECTION */
+.section{padding:40px 70px}
+.section h2{border-left:5px solid #ff4c4c;padding-left:10px;margin-bottom:20px}
+
+/* SLIDER */
+.slider{position:relative}
+.track{display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;padding:10px 60px}
+.track::-webkit-scrollbar{display:none}
+
+.movie-card{min-width:200px;transition:.3s;position:relative}
+.movie-card:hover{transform:scale(1.07)}
+.movie-card img{width:100%;border-radius:10px}
+
+/* NAV BUTTONS */
+.nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:#ff4c4c;border:none;width:44px;height:44px;border-radius:50%;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:5}
+.prev{left:0}
+.next{right:0}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:2000}
+.modal-content{background:#111;border-radius:12px;padding:25px;width:90%;max-width:900px;position:relative}
+.modal-grid{display:grid;grid-template-columns:300px 1fr;gap:20px}
+.modal img{width:100%;border-radius:10px}
+.modal video{width:100%;margin-top:15px;border-radius:8px}
+.play-btn{background:#ff4c4c;border:none;padding:10px 16px;border-radius:6px;margin-top:10px}
+.close{position:absolute;top:10px;right:18px;font-size:26px}
+
+/* FOOTER */
+footer{background:#0a0a0a;margin-top:80px;padding:70px 70px 30px}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px}
+.footer-col h4{color:#ff4c4c;margin-bottom:18px;font-family:'Oswald',sans-serif}
+.footer-col a,.footer-col p{color:#aaa;font-size:14px;display:block;margin-bottom:10px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #222;margin-top:50px;padding-top:20px;text-align:center;font-size:13px;color:#777}
+
+@media(max-width:768px){
+  .modal-grid{grid-template-columns:1fr}
+  header{flex-direction:column}
+  .search-wrap input{width:100%}
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CineHub</div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="movies.html">Movies</a></li>
+      <li class="active">Genres</li>
+      <li><a href="trailers.html">Trailers</a></li>
+      <li>Coming Soon</li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
+
+  <!-- ✅ SEARCH ADDED CLEANLY -->
+  <div class="search-wrap">
+    <input id="searchInput" type="text" placeholder="Search movies...">
+  </div>
+</header>
+
+<section class="hero">
+  <video autoplay muted loop src="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4"></video>
+  <h1>Browse by Genre</h1>
+</section>
+
+<div class="genre-tabs" id="tabs"></div>
+
+<section class="section">
+  <h2 id="genreTitle">Action</h2>
+  <div class="slider">
+    <button class="nav-btn prev" onclick="slide(-1)">‹</button>
+    <div class="track" id="track"></div>
+    <button class="nav-btn next" onclick="slide(1)">›</button>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" id="close">✕</span>
+    <div class="modal-grid">
+      <img id="poster">
+      <div>
+        <h2 id="title"></h2>
+        <p id="desc"></p>
+        <button class="play-btn" id="playBtn">Play Trailer</button>
+        <video id="video" controls style="display:none"></video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h4>CineHub</h4><p>Premium cinematic streaming platform.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="genres.html">Genres</a></div>
+    <div class="footer-col"><h4>Support</h4><a>Help Center</a><a>FAQ</a></div>
+    <div class="footer-col"><h4>Contact</h4><p>support@cinehub.com</p></div>
+  </div>
+  <div class="footer-bottom">© 2026 CineHub</div>
+</footer>
+
+<script>
+const IMAGE="img/20222406.webp";
+const VIDEO="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4";
+
+const genres=["Action","Drama","Comedy","Horror","Romance","Sci-Fi"];
+const tabs=document.getElementById('tabs');
+const track=document.getElementById('track');
+const title=document.getElementById('genreTitle');
+const searchInput=document.getElementById('searchInput');
+
+let currentGenre="Action";
+
+/* tabs */
+genres.forEach((g,i)=>{
+  const btn=document.createElement('div');
+  btn.className='genre-tab'+(i===0?' active':'');
+  btn.textContent=g;
+  btn.onclick=()=>selectGenre(g,btn);
+  tabs.appendChild(btn);
+});
+
+function selectGenre(genre,btn){
+  document.querySelectorAll('.genre-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentGenre=genre;
+  title.textContent=genre;
+  render();
+}
+
+/* render with search filter (CLEAN + RELIABLE) */
+function render(){
+  track.innerHTML='';
+
+  const query=searchInput.value.toLowerCase();
+
+  for(let i=1;i<=12;i++){
+    const name=`${currentGenre} Movie ${i}`;
+
+    if(query && !name.toLowerCase().includes(query)) continue;
+
+    const card=document.createElement('div');
+    card.className='movie-card';
+    card.innerHTML=`<img src="${IMAGE}">`;
+    card.onclick=()=>openModal(name);
+    track.appendChild(card);
+  }
+}
+
+/* search live */
+searchInput.oninput=()=>render();
+
+/* slider */
+function slide(dir){track.scrollBy({left:dir*600,behavior:'smooth'})}
+
+/* modal */
+const modal=document.getElementById('modal');
+const poster=document.getElementById('poster');
+const movieTitle=document.getElementById('title');
+const desc=document.getElementById('desc');
+const video=document.getElementById('video');
+const playBtn=document.getElementById('playBtn');
+const close=document.getElementById('close');
+
+function openModal(name){
+  modal.style.display='flex';
+  poster.src=IMAGE;
+  movieTitle.textContent=name;
+  desc.textContent='A thrilling cinematic experience. Click play to watch the trailer.';
+  video.style.display='none';
+}
+
+playBtn.onclick=()=>{
+  video.src=VIDEO;
+  video.style.display='block';
+  video.play();
+}
+
+function closePlayer(){
+  video.pause();
+  video.currentTime=0;
+  video.removeAttribute('src');
+  modal.style.display='none';
+}
+
+close.onclick=closePlayer;
+modal.onclick=(e)=>{if(e.target===modal) closePlayer()}
+
+render();
+</script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

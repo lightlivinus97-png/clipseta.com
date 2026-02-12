@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineHub • Trailers</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto',sans-serif;background:#0d0d0d;color:#fff;overflow-x:hidden}
+a,button,.trailer-card,.nav-btn,.play-btn,.close,input{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;background:rgba(0,0,0,.85);position:sticky;top:0;z-index:1000;gap:20px}
+.logo{font-family:'Oswald',sans-serif;font-size:28px;color:#ff4c4c}
+nav ul{list-style:none;display:flex;gap:25px}
+nav li:hover{color:#ff4c4c}
+nav .active{color:#ff4c4c}
+
+/* SEARCH */
+.search-wrap input{
+  padding:8px 14px;
+  border-radius:6px;
+  border:none;
+  background:#1a1a1a;
+  color:#fff;
+  outline:none;
+  width:220px;
+}
+
+/* HERO */
+.hero{position:relative;height:50vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero video{position:absolute;width:100%;height:100%;object-fit:cover;filter:brightness(.45)}
+.hero h1{position:relative;font-size:50px;font-family:'Oswald',sans-serif}
+
+/* TRAILERS GRID */
+.section{padding:40px 50px}
+.section h2{border-left:5px solid #ff4c4c;padding-left:10px;margin-bottom:20px}
+
+.trailers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.trailer-card{position:relative;overflow:hidden;border-radius:10px;transition:.3s}
+.trailer-card img{width:100%;display:block}
+.trailer-card video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:.3s}
+.trailer-card:hover video{opacity:1}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:2000}
+.modal-content{background:#111;border-radius:12px;padding:25px;width:90%;max-width:900px;position:relative}
+.modal video{width:100%;border-radius:8px}
+.play-btn{background:#ff4c4c;border:none;padding:10px 16px;border-radius:6px;margin-top:10px}
+.close{position:absolute;top:10px;right:18px;font-size:26px}
+
+/* FOOTER */
+footer{background:#0a0a0a;margin-top:80px;padding:70px 70px 30px}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px}
+.footer-col h4{color:#ff4c4c;margin-bottom:18px;font-family:'Oswald',sans-serif}
+.footer-col a,.footer-col p{color:#aaa;font-size:14px;display:block;margin-bottom:10px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #222;margin-top:50px;padding-top:20px;text-align:center;font-size:13px;color:#777}
+
+@media(max-width:768px){
+  header{flex-direction:column}
+  .search-wrap input{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CineHub</div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="movies.html">Movies</a></li>
+      <li><a href="genres.html">Genres</a></li>
+      <li class="active">Trailers</li>
+      <li>Coming Soon</li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
+
+  <div class="search-wrap">
+    <input id="searchInput" type="text" placeholder="Search trailers...">
+  </div>
+</header>
+
+<section class="hero">
+  <video autoplay muted loop src="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4"></video>
+  <h1>Latest Trailers</h1>
+</section>
+
+<section class="section">
+  <h2>All Trailers</h2>
+  <div class="trailers-grid" id="trailerGrid"></div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" id="close">✕</span>
+    <video id="video" controls></video>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h4>CineHub</h4><p>Premium cinematic streaming platform.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="genres.html">Genres</a></div>
+    <div class="footer-col"><h4>Support</h4><a>Help Center</a><a>FAQ</a></div>
+    <div class="footer-col"><h4>Contact</h4><p>support@cinehub.com</p></div>
+  </div>
+  <div class="footer-bottom">© 2026 CineHub</div>
+</footer>
+
+<script>
+const VIDEO="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4";
+const trailerGrid=document.getElementById('trailerGrid');
+const searchInput=document.getElementById('searchInput');
+const modal=document.getElementById('modal');
+const video=document.getElementById('video');
+const close=document.getElementById('close');
+
+const trailers=Array.from({length:20}).map((_,i)=>({
+  title:`Trailer ${i+1}`,
+  video:VIDEO,
+  img:"img/20222406.webp"
+}));
+
+function render(){
+  trailerGrid.innerHTML="";
+  const query=searchInput.value.toLowerCase();
+  trailers.forEach(t=>{
+    if(query && !t.title.toLowerCase().includes(query)) return;
+    const div=document.createElement('div');
+    div.className='trailer-card';
+    div.innerHTML=`<img src="${t.img}"><video src="${t.video}" muted loop></video>`;
+    div.onclick=()=>openModal(t.video);
+    trailerGrid.appendChild(div);
+  });
+}
+
+searchInput.oninput=render;
+
+function openModal(src){
+  modal.style.display='flex';
+  video.src=src;
+  video.play();
+}
+
+function closeModal(){
+  video.pause();
+  video.currentTime=0;
+  video.removeAttribute('src');
+  modal.style.display='none';
+}
+
+close.onclick=closeModal;
+modal.onclick=(e)=>{if(e.target===modal) closeModal()}
+
+render();
+</script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

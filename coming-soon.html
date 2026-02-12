@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CineHub • Coming Soon</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto',sans-serif;background:#0d0d0d;color:#fff;overflow-x:hidden}
+a,button,.movie-card,.close,input{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;background:rgba(0,0,0,.85);position:sticky;top:0;z-index:1000;gap:20px}
+.logo{font-family:'Oswald',sans-serif;font-size:28px;color:#ff4c4c}
+nav ul{list-style:none;display:flex;gap:25px}
+nav li:hover{color:#ff4c4c}
+nav .active{color:#ff4c4c}
+
+.search-wrap input{padding:8px 12px;border-radius:6px;border:none;background:#1a1a1a;color:#fff;outline:none;width:220px}
+
+/* HERO */
+.hero{position:relative;height:55vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero video{position:absolute;width:100%;height:100%;object-fit:cover;filter:brightness(.4)}
+.hero-content{position:relative;text-align:center}
+.hero h1{font-size:56px;font-family:'Oswald',sans-serif}
+.hero p{margin-top:10px;color:#ccc}
+
+/* GRID */
+.section{padding:50px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px}
+
+.movie-card{background:#111;border-radius:12px;overflow:hidden;transition:.3s}
+.movie-card:hover{transform:scale(1.05)}
+.movie-card img{width:100%;display:block}
+.card-body{padding:14px}
+.card-title{font-weight:700;margin-bottom:6px}
+.release{font-size:13px;color:#aaa;margin-bottom:10px}
+.countdown{font-size:13px;color:#ff4c4c;margin-bottom:12px}
+.notify-btn{background:#ff4c4c;border:none;padding:8px 12px;border-radius:6px;color:#fff;font-size:13px}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:2000}
+.modal-content{background:#111;border-radius:12px;padding:25px;width:90%;max-width:900px;position:relative}
+.modal video{width:100%;border-radius:8px;margin-top:15px}
+.close{position:absolute;top:10px;right:18px;font-size:26px}
+
+/* FOOTER */
+footer{background:#0a0a0a;margin-top:80px;padding:70px 70px 30px}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px}
+.footer-col h4{color:#ff4c4c;margin-bottom:18px;font-family:'Oswald',sans-serif}
+.footer-col a,.footer-col p{color:#aaa;font-size:14px;display:block;margin-bottom:10px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #222;margin-top:50px;padding-top:20px;text-align:center;font-size:13px;color:#777}
+
+@media(max-width:768px){
+  header{flex-direction:column}
+  .search-wrap input{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CineHub</div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="movies.html">Movies</a></li>
+      <li><a href="genres.html">Genres</a></li>
+      <li><a href="trailers.html">Trailers</a></li>
+      <li class="active">Coming Soon</li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
+  <div class="search-wrap">
+    <input id="searchInput" placeholder="Search upcoming movies...">
+  </div>
+</header>
+
+<section class="hero">
+  <video autoplay muted loop src="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4"></video>
+  <div class="hero-content">
+    <h1>Coming Soon</h1>
+    <p>Upcoming blockbusters & releases</p>
+  </div>
+</section>
+
+<section class="section">
+  <div id="grid" class="grid"></div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" id="close">✕</span>
+    <video id="video" controls></video>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h4>CineHub</h4><p>Your home for movies and trailers worldwide.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="genres.html">Genres</a><a href="trailers.html">Trailers</a></div>
+    <div class="footer-col"><h4>Support</h4><a>Help Center</a><a>FAQ</a></div>
+    <div class="footer-col"><h4>Contact</h4><p>support@cinehub.com</p></div>
+  </div>
+  <div class="footer-bottom">© 2026 CineHub</div>
+</footer>
+
+<script>
+const IMAGE="img/20222406.webp";
+const VIDEO="movies/LOVE_AT_THE_GATE_-_CLINTON_JOSHUA,_OMECHE_OKO,_JOSEPHINE_SUNDAY_JOJO__latest_2025_nigerian_movie(18).mp4";
+
+const grid=document.getElementById('grid');
+const searchInput=document.getElementById('searchInput');
+const modal=document.getElementById('modal');
+const video=document.getElementById('video');
+const close=document.getElementById('close');
+
+const upcoming=Array.from({length:20}).map((_,i)=>({
+  title:`Upcoming Movie ${i+1}`,
+  date:new Date(Date.now()+((i+1)*86400000*3)),
+  img:IMAGE,
+  trailer:VIDEO
+}));
+
+function daysLeft(date){
+  const diff=date-new Date();
+  return Math.max(0,Math.ceil(diff/86400000));
+}
+
+function render(){
+  const q=searchInput.value.toLowerCase();
+  grid.innerHTML='';
+
+  upcoming.forEach(m=>{
+    if(q && !m.title.toLowerCase().includes(q)) return;
+
+    const card=document.createElement('div');
+    card.className='movie-card';
+
+    card.innerHTML=`
+      <img src="${m.img}">
+      <div class="card-body">
+        <div class="card-title">${m.title}</div>
+        <div class="release">Release: ${m.date.toDateString()}</div>
+        <div class="countdown">${daysLeft(m.date)} days left</div>
+        <button class="notify-btn">Watch Trailer</button>
+      </div>`;
+
+    card.querySelector('.notify-btn').onclick=(e)=>{
+      e.stopPropagation();
+      openModal(m.trailer);
+    };
+
+    grid.appendChild(card);
+  });
+}
+
+function openModal(src){
+  modal.style.display='flex';
+  video.src=src;
+  video.play();
+}
+
+function closeModal(){
+  video.pause();
+  video.currentTime=0;
+  video.removeAttribute('src');
+  modal.style.display='none';
+}
+
+searchInput.oninput=render;
+close.onclick=closeModal;
+modal.onclick=(e)=>{if(e.target===modal) closeModal()};
+
+render();
+</script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
